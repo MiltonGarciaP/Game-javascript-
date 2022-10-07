@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <link rel="shortcut icon" href="Imagenes/Icono.jpg">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memograma</title>
+
+
+
+    <style>
+
+        .container{
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #main_cont{
+         background: #088fdd;
+         border: double 4px red;
+         border-radius: 4px;
+         padding: 20px;
+         display: grid;
+         min-width: 500px;
+         min-height: 400px;
+         grid-template-columns: repeat(6,6fr);
+         justify-content: center;
+
+
+        }
+
+        #main_cont div{
+            width: 150px;
+            height: 150px; 
+            border: solid 2px black;
+            margin: 5px;
+            border-radius: 5px;
+            background: rgb(25, 25, 26);
+            text-align: center;
+            margin-top: center;
+        }
+
+        #main_cont div:hover{
+            background: blue ;
+            cursor: pointer;
+        }
+
+       
+        .img_premio{
+           width: 150px;
+           height: 150px;
+           visibility: hidden;
+
+        }
+
+        #main_cont div .visible{
+            visibility: visible;
+           
+
+        }
+
+        .img-logo{
+            width: 160px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .cabecera-principal{
+
+            margin-bottom: 10px;
+        }
+
+        .titulo-juego{
+          text-align: center;
+        }
+
+        .contenedor-vidas img{
+            width: 60px;
+            margin: 5px;
+        }
+
+        .contenedor-vidas span{
+            font-size: 30px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-top: -20px;
+        }
+
+        #contenedor-mensaje-victoria, #contenedor-mensaje-derrota  {
+	    position: fixed;
+	    top: 0;
+	    bottom: 0;
+	    left: 0;
+	    right: 0;
+	     background: #000000ad;
+        }
+
+        #mensaje-victoria, #mensaje-derrota {
+	    min-height: 400px;
+	    background: white;
+     	top: 20%;
+    	position: relative;
+    	max-width: 600px;
+	   margin: 0 auto;
+    	padding: 10px;
+    	text-align: center;
+        }
+
+        .ocultar-mensaje {
+	    display: none;
+        }
+
+
+
+
+
+
+
+        
+
+    </style>
+
+     
+
+
+</head>
+<body onload="initGame();">
+
+   
+
+    <header class="cabecera-principal">
+        <img src="Imagenes/Icono.jpg" alt ="logo de juegos" class="img-logo">
+    <div class="container">
+        <h1 class="titulo-juego">Juego de cartas Iguales</h1>
+        <h3>Ubica las pares de cartas en menos de 5 intentos </h3>
+        <h2>Vida:  </h2>
+    </header>
+
+
+    
+
+    </div>
+
+    <div id="main_cont">
+
+      
+   
+
+    </div>
+
+ 
+
+
+</div>
+    <script>
+        vida = 10000 ;
+
+        function _gid(idx){
+            return document.getElementById(idx);
+
+        }
+
+        function _dce(elem){
+           return document.createElement(elem);
+
+        }
+
+       
+        var imagenesVisibles = 0;
+        var imagenanterior = false;
+
+        function verificar(obj){
+            index = obj.getAttribute('imagen');
+            imagen = _gid('imagen'+index);
+            visible = imagen.getAttribute('visible');
+            console.log(visible)
+
+            if(visible == '0'){
+                imagen.style.visibility = 'visible';
+                imagen.setAttribute('visible',1);
+                imagenesVisibles++;
+                if(!imagenanterior){
+                    imagenanterior = imagen;
+                }
+
+            }
+
+            setTimeout(() => {
+                if(imagenesVisibles >1){
+
+                    if(imagenanterior.getAttribute('src') == imagen.getAttribute('src')){
+                        alert('Son Iguales');
+
+                    }else{ 
+                       
+                        
+                        
+                        
+                       
+
+                         imagen.style.visibility = 'hidden';
+                         imagen.setAttribute('visible',0);
+                         imagenanterior.style.visibility = 'hidden';
+                         imagenanterior.setAttribute('visible',0);
+                         alert('Te quedan de Vidas ' + vida)
+
+
+                        
+                         if(vida <= 0){
+                            alert (' Haz perdido total de vidas Perdidas  ')
+                            alert('La pagina se reiniciara para que lo intentes de nuevo ')
+                            location.reload();
+              
+            }
+             -- vida;
+
+                         
+                         
+                
+                }
+
+                
+
+                imagenesVisibles = 0;
+                imagenanterior = false;
+
+                
+
+                    
+                    
+                }
+                
+            
+            }, 600);
+
+        }
+
+    
+
+            
+        
+                
+            
+
+           
+            
+        
+
+        function initGame(){
+         destino = _gid('main_cont');
+         destino.innerHTML = '';
+
+
+           var fotos =[0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8];
+
+           fotos  = fotos.sort( () => .5 - Math.random());
+
+
+        
+         fotos.map ((prop,index)=>{
+
+             x= fotos[index];
+           div = _dce('div');
+           div.setAttribute('imagen',index)
+           div.setAttribute('onclick','verificar(this)');
+           div.innerHTML = `
+           
+           <img visible = "0" id="imagen${index}" src="img/${x}.png" class="img_premio"/>
+           `;
+
+           destino.appendChild(div);
+        
+            
+
+         });
+        
+        }
+    
+        
+    </script>
+    
+</body>
+</html>
